@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "palloc.h"
+#include "block.h"
 #include "bitops.h"
 
 
@@ -10,6 +11,8 @@ static int mc_xor_bits[64] = {0};
 
 static void palloc_test(void)
 {
+	malloc_init();
+	
 	set_mc_xor(1);
 	set_palloc_mask(0x1E000);
 	set_palloc_ctrl(13, 17);
@@ -20,6 +23,7 @@ static void palloc_test(void)
 	page_to_color(0x21000);
 	page_to_color(0x4000);
 
+	
 }
 
 void test_xor(void)

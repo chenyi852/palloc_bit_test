@@ -14,11 +14,7 @@ static unsigned long sysctl_palloc_mask = 0x0;
 static int mc_xor_bits[64];
 static int use_mc_xor = 0;
 
-int palloc_bins(void)
-{
-	return min((1 << bitmap_weight(&sysctl_palloc_mask, 8*sizeof (unsigned long))),
-		   MAX_PALLOC_BINS);
-}
+
 
 int set_palloc_mask(unsigned long mask)
 {
