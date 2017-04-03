@@ -11,7 +11,7 @@
 
 int set_palloc_mask(unsigned long mask);
 
-int page_to_color(unsigned long paddr);
+int page_to_color(void *paddr);
 
 int set_mc_xor(int mode);
 

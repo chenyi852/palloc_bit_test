@@ -38,18 +38,19 @@ int set_palloc_ctrl(int bit, int xor_bit)
 }
 
 
-int page_to_color(unsigned long paddr)
+int page_to_color(void *paddr)
 {
 	int color = 0;
 	int idx = 0;
 	int c;
+	unsigned long addr = *(unsigned long *)paddr;
 
 	for_each_set_bit(c, &sysctl_palloc_mask, sizeof(unsigned long) * 8) {
 		if (use_mc_xor) {
-			if (((paddr >> c) & 0x1) ^ ((paddr >> mc_xor_bits[c]) & 0x1))
+			if (((addr >> c) & 0x1) ^ ((addr >> mc_xor_bits[c]) & 0x1))
 				color |= (1 << idx);
 		} else {
-			if ((paddr >> c) & 0x1)
+			if ((addr >> c) & 0x1)
 				color |= (1 << idx);
 		}
 		DBG("mask %llx\t bit is %d, idx:%d color : %d\n", sysctl_palloc_mask,  c, idx, color);
