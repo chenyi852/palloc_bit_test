@@ -1,16 +1,20 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "palloc.h"
-#include "block.h"
+
 #include "bitops.h"
+#include "list.h"
+#include "block.h"
+
 
 
 static int mc_xor_bits[64] = {0};
 
 
-
 static void palloc_test(void)
 {
+	int i  = 0;
+	t_page_buf * page;
 	malloc_init();
 	
 	set_mc_xor(1);
@@ -20,10 +24,27 @@ static void palloc_test(void)
 	set_palloc_ctrl(15, 19);
 	set_palloc_ctrl(16, 20);
 
-	page_to_color(0x21000);
-	page_to_color(0x4000);
+	page_to_color((void *)0x21000);
+	page_to_color((void *)0x4000);
 
+	for (i = 0; i < 100; i++)
+	{
+		page  = malloc_page(1);
+		if (page == NULL){
+			printf("alloc null\n");
+			continue;
+		}
+		*(unsigned long *)page = 0x5a5a5a5a;
+		/* printf("%p =  0x%lx\n", page, *(unsigned long *)page); */
+		//free_page(page);
+	}
 	
+	for (i = 0; i < 100; i++)
+	{
+			
+	}
+	
+	printf("----finish palloc test!-------------\n");
 }
 
 void test_xor(void)
@@ -41,6 +62,38 @@ void test_xor(void)
 	}
 }
 
+typedef struct stu_num
+{
+	int num;
+	struct list_head list;
+}t_stu;
+void test_list(void)
+{
+	static t_stu stu_head;
+	t_stu	mstu, astu;
+	t_stu *stu;
+	
+	INIT_LIST_HEAD(&stu_head.list);
+	mstu.num = 1;
+	list_add(&mstu.list, &stu_head.list);
+	//printf("1: %lx\n", mstu.list.next);
+	astu.num = 2;
+	list_add(&astu.list, &stu_head.list);
+	//printf("2: %lx\n", astu.list.next);
+	list_for_each_entry(stu, &stu_head.list, list)
+	{
+		printf("stu.num =  %d\n", stu->num);
+		
+	}
+	list_del(&mstu.list);
+	list_del(&astu.list);
+	
+	if(list_empty(&stu_head.list))
+		printf("the list is empty!\n");
+	
+
+}
+
 void main(void)
 {
 	int val = 0;
@@ -51,6 +104,7 @@ void main(void)
 
 	mc_xor_bits[13] = 18;
 	
+	test_list();
 	test_xor();
 
 	for (i = 0; i < sizeof(mc_xor_bits); i++)

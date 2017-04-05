@@ -1,6 +1,15 @@
 #ifndef _BIT_OPTS_H
 #define _BIT_OPTS_H
 
+/* #define DEBUG 1  */
+
+#ifdef	DEBUG 
+#define PDBG(fmt, ...)	\
+	printf(fmt, ##__VA_ARGS__)
+#else
+#define PDBG
+#endif
+
 #define BITS_PER_LONG (sizeof(long)*8)
 
 #define BITMAP_FIRST_WORD_MASK(start) (~0UL << ((start) & (BITS_PER_LONG - 1)))
@@ -33,6 +42,11 @@
 			(void) (&_max1 == &_max2);		\
 			_max1 > _max2 ? _max1 : _max2; })
 
+unsigned long find_first_bit(const unsigned long *addr, unsigned long size);
+
+unsigned long find_next_bit(const unsigned long *addr, unsigned long size,
+			    unsigned long offset);
+
 
 #define for_each_set_bit(bit, addr, size) \
 	for ((bit) = find_first_bit((addr), (size));		\
@@ -40,6 +54,14 @@
 	     (bit) = find_next_bit((addr), (size), (bit) + 1))
 
 
+
+#ifndef likely
+#define	likely(x)	__builtin_expect((x), 1)
+#endif
+
+#ifndef unlikely
+#define	unlikely(x)	__builtin_expect((x), 1)
+#endif
 
 
 
