@@ -10,11 +10,11 @@
 
 static int mc_xor_bits[64] = {0};
 
-
+#define MALLOC_TIME	(100)
 static void palloc_test(void)
 {
 	int i  = 0;
-	t_page_buf * page;
+	t_page_buf * page[MALLOC_TIME];
 	malloc_init();
 	
 	set_mc_xor(1);
@@ -29,20 +29,39 @@ static void palloc_test(void)
 
 	for (i = 0; i < 100; i++)
 	{
-		page  = malloc_page(1);
-		if (page == NULL){
+		page[i]  = malloc_page(1);
+		if (page[i] == NULL){
 			printf("alloc null\n");
 			continue;
 		}
-		*(unsigned long *)page = 0x5a5a5a5a;
+		*(unsigned long *)page[i] = 0x5a5a5a5a;
 		/* printf("%p =  0x%lx\n", page, *(unsigned long *)page); */
 		//free_page(page);
 	}
 	
 	for (i = 0; i < 100; i++)
 	{
-			
+			free_page(page[i]);
 	}
+	
+	/* second test 88888888888888888888 */
+	for (i = 0; i < 100; i++)
+	{
+		page[i]  = malloc_page(1);
+		if (page[i] == NULL){
+			printf("alloc null\n");
+			continue;
+		}
+		*(unsigned long *)page[i] = 0x5a5a5a5a;
+		/* printf("%p =  0x%lx\n", page, *(unsigned long *)page); */
+		//free_page(page);
+	}
+	
+	for (i = 0; i < 100; i++)
+	{
+			free_page(page[i]);
+	}
+	
 	
 	printf("----finish palloc test!-------------\n");
 }

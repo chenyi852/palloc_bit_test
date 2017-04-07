@@ -84,6 +84,7 @@ void free_page(void *addr)
 	t_page_buf	*page = (t_page_buf *)addr;
 	int page_color = 0;
 	
+	//printf("free page addr:%p\n", addr);
 	page_color = page_to_color(addr);
 		
 		
