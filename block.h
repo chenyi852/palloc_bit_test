@@ -1,5 +1,5 @@
-#ifndef _BLOCK_H
-#define _BLOCK_H
+#ifndef _BLOCK_H_
+#define _BLOCK_H_
 
 #include "list.h"
 
@@ -12,7 +12,7 @@
 typedef struct page_buf
 {
 	struct list_head	list;
-	char buf[PAGE_SIZE - sizeof(struct list_head)];
+	char buf[PAGE_SIZE - sizeof(struct list_head)];	
 }t_page_buf;
 
 typedef struct mem_info
@@ -27,4 +27,4 @@ typedef struct mem_info
 void malloc_init(void);
 t_page_buf * malloc_page(int color);
 void free_page(void *addr);
-#endif
+#endif /* _BLOCK_H_ */

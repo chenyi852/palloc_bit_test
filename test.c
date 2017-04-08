@@ -10,22 +10,13 @@
 
 static int mc_xor_bits[64] = {0};
 
+
 #define MALLOC_TIME	(100)
-static void palloc_test(void)
+
+static void malloc_page_test(void)
 {
 	int i  = 0;
 	t_page_buf * page[MALLOC_TIME];
-	malloc_init();
-	
-	set_mc_xor(1);
-	set_palloc_mask(0x1E000);
-	set_palloc_ctrl(13, 17);
-	set_palloc_ctrl(14, 18);
-	set_palloc_ctrl(15, 19);
-	set_palloc_ctrl(16, 20);
-
-	page_to_color((void *)0x21000);
-	page_to_color((void *)0x4000);
 
 	for (i = 0; i < 100; i++)
 	{
@@ -61,7 +52,25 @@ static void palloc_test(void)
 	{
 			free_page(page[i]);
 	}
+}
+
+static void palloc_test(void)
+{
 	
+	malloc_init();
+	
+	set_mc_xor(1);
+	set_palloc_mask(0x1E000);
+	set_palloc_ctrl(13, 17);
+	set_palloc_ctrl(14, 18);
+	set_palloc_ctrl(15, 19);
+	set_palloc_ctrl(16, 20);
+
+	page_to_color((void *)0x21000);
+	page_to_color((void *)0x4000);
+
+	
+	malloc_page_test();
 	
 	printf("----finish palloc test!-------------\n");
 }

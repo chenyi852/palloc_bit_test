@@ -93,4 +93,14 @@ void free_page(void *addr)
 }
 
 
+t_page_buf * cmalloc(void)
+{
+
+}
+
+void cfree(void *add)
+{
+
+}
+
 
