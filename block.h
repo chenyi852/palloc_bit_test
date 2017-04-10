@@ -8,6 +8,7 @@
 #define MEM_SIZE	0x1000000
 #define PAGE_SHIFT	12
 #define PAGE_SIZE	(1<<PAGE_SHIFT)
+#define NR_CPUS		(4)
 
 typedef struct page_buf
 {
@@ -22,6 +23,7 @@ typedef struct mem_info
 	unsigned int free_count;
 	t_page_buf	*page;
 	struct list_head	color_list[BLOCK_COLOR_BIN];
+	
 }t_mem_info;
 
 void malloc_init(void);

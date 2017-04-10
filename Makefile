@@ -1,6 +1,6 @@
 
 CC=gcc
-CFLAGS=-g -std=gnu99
+CFLAGS=-g -std=gnu99 -lpthread
 
 OBJS=  bitops.o palloc.o block.o
 DEPS = bitops.h palloc.h block.h atomic.h
@@ -12,7 +12,7 @@ test : test.o $(OBJS)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 atomic:atomic_test.o $(OBJS)
-	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS) 
 
 clean:
 		rm -f *.o test
