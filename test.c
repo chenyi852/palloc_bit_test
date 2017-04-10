@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "palloc.h"
+#include <pthread.h>
 
 #include "bitops.h"
 #include "list.h"
@@ -13,10 +14,10 @@ static int mc_xor_bits[64] = {0};
 
 #define MALLOC_TIME	(100)
 
-static void malloc_page_test(void)
+void *malloc_page_test(void *arg)
 {
 	int i  = 0;
-	t_page_buf * page[MALLOC_TIME];
+	page_buf * page[MALLOC_TIME];
 
 	for (i = 0; i < 100; i++)
 	{
@@ -56,7 +57,8 @@ static void malloc_page_test(void)
 
 static void palloc_test(void)
 {
-	
+	pthread_t th1, th2;	
+	int ret = 0;
 	malloc_init();
 	
 	set_mc_xor(1);
@@ -69,9 +71,18 @@ static void palloc_test(void)
 	page_to_color((void *)0x21000);
 	page_to_color((void *)0x4000);
 
-	
-	malloc_page_test();
-	
+	ret = pthread_create(&th1, NULL, malloc_page_test, NULL);
+	if (ret != 0){
+		printf("create thread 1 fail!\n");
+	}
+
+	//ret = pthread_create(&th2, NULL, malloc_page_test, NULL);
+	if (ret != 0){
+		printf("create thread 2 fail!\n");
+	}
+
+	pthread_join(th1, NULL);
+	//pthread_join(th2, NULL);
 	printf("----finish palloc test!-------------\n");
 }
 

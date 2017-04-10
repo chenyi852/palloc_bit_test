@@ -37,7 +37,8 @@ void main(void)
 	pthread_t th1, th2, th3;
 	int nb1=1, nb2=2, nb3=3;
 	int ret = 0;
-	
+
+	ATOMICQ_INIT(&head);
 	zy.num = 7;
 	sp = &zy;
 	/* put sp into head */
