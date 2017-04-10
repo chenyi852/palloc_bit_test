@@ -15,12 +15,9 @@ typedef struct page_buf
 {
 	struct list_head	list;
 	ATOMICQ_ENTRY(page_buf) next;
-	char buf[PAGE_SIZE - sizeof(struct list_head)];	
+	char buf[PAGE_SIZE - sizeof(struct list_head) - sizeof(ATOMICQ_ENTRY(page_buf))];
 }page_buf;
 
-typedef struct cpu_cache{
-	ATOMICQ_ENTRY(cpu_cache)	next;
-}cpu_cache;
 
 typedef struct mem_info
 {
@@ -30,7 +27,6 @@ typedef struct mem_info
 	page_buf	*page;
 	struct list_head	color_list[BLOCK_COLOR_BIN];
 	ATOMICQ_HEAD(,page_buf)	cpuq[NR_CPUS];
-	cpu_cache cache[NR_CPUS];
 }t_mem_info;
 
 void malloc_init(void);

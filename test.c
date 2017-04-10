@@ -45,7 +45,7 @@ void *malloc_page_test(void *arg)
 			continue;
 		}
 		*(unsigned long *)page[i] = 0x5a5a5a5a;
-		/* printf("%p =  0x%lx\n", page, *(unsigned long *)page); */
+		/* printf("%p =  0x%lx\n", page[i], *(unsigned long *)page[i]); */
 		//free_page(page);
 	}
 	
